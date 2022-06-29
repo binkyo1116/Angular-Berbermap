@@ -1,0 +1,276 @@
+.row {
+  display: flex;
+  align-items: center;
+  margin: 30px 0;
+  padding: 2px 0 2px 8px;
+  font-size: 16px;
+  color: #2e4c6d;
+}
+
+.title {
+  min-width: 120px;
+  font-size: 18px;
+}
+
+.spot-container {
+  width: 400px;
+  max-width: 100%;
+
+  // Make input width bigger
+  // So the autocomplete dropdown can align the input box.
+  ::ng-deep {
+    .mat-form-field-infix {
+      padding: 0;
+
+      input {
+        padding: 1em 10px;
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+    }
+  }
+}
+
+.spot-exist-warning {
+  margin-left: 8px;
+  color: #ff6f43;
+}
+
+.address-buttons {
+  margin-left: 5px;
+  mat-icon {
+    color: #396fb0;
+    transition: color 0.3s;
+  }
+  &:hover {
+    mat-icon {
+      color: #2e4c6d;
+    }
+  }
+}
+
+.mat-radio-button {
+  margin: 2px 40px 0 0;
+
+  ::ng-deep {
+    .mat-radio-label-content {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.mark-icon {
+  padding-left: 5px;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tag-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 8px 5px 0;
+  padding: 0 34px 0 14px;
+  height: 30px;
+  background: #e6f2f6;
+  border: 1px solid #9fc9dc;
+  border-radius: 15px;
+  span {
+    line-height: 30px;
+    white-space: nowrap;
+  }
+  button {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    transition: background 0.3s;
+    &:hover {
+      background: #9fc9dc;
+    }
+  }
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+    color: #2e4c6d;
+  }
+}
+
+.note-container {
+  width: 500px;
+  max-width: 100%;
+}
+
+.image-row {
+  flex-wrap: wrap;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 280px;
+  height: 210px;
+  margin: 0 20px 20px 0;
+  border: 1px solid #396fb0;
+  border-radius: 8px;
+  background: #e6f3fb;
+  overflow: hidden;
+  transition: opacity 0.3s;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+  }
+  .remove-image-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #f5693f;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+    color: white;
+  }
+  &:hover {
+    img {
+      opacity: 0.8;
+    }
+    button {
+      opacity: 1;
+    }
+  }
+  .disabled {
+    background: #9f9f9f;
+    cursor: not-allowed;
+  }
+}
+
+.move-image-order {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  button {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #396fb0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    &:not(:last-child) {
+      margin-right: 6px;
+    }
+  }
+}
+
+.upload-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  margin: 0 20px 20px 0;
+  width: 280px;
+  height: 210px;
+  background: #daddfc;
+  border-radius: 8px;
+  color: #396fb0;
+  border: 2px dashed currentColor;
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 0.8;
+  }
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .upload-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+  }
+}
+
+.error {
+  padding: 0 10px;
+  font-size: 16px;
+  color: #ff6f43;
+}
+
+.button-row {
+  justify-content: center;
+  margin: 60px 0 3px 0;
+
+  .cancel-button {
+    width: 80px;
+    font-size: 16px;
+    color: #2e4c6d;
+    background: #f5f5f5;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 0%), 0px 2px 2px 0px rgb(0 0 0 / 14%),
+      0px 1px 5px 0px rgb(0 0 0 / 12%);
+    transition: background 0.3s;
+
+    &:hover {
+      background: #e1e1e1;
+    }
+  }
+
+  .save-button {
+    margin-left: 10px;
+    width: 80px;
+    font-size: 16px;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #2e4c6d;
+    }
+  }
+}
+
+.delete-button {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  mat-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    line-height: 30px;
+    color: #fc9a7c;
+    transition: color 0.3s;
+  }
+  &:hover {
+    mat-icon {
+      color: #ff6f43;
+    }
+  }
+}

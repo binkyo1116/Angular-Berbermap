@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/berbermap
+    docker:
+      - image: circleci/node:16-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: my-project-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - save_cache:
+          key: my-project-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - 'node_modules'
+      - run: yarn test --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run: yarn test:firebase
+      - run: yarn deploy:firebase

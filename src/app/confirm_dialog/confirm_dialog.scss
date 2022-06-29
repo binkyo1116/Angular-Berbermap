@@ -1,0 +1,46 @@
+.confirm-wrapper {
+  padding: 50px;
+}
+
+.title {
+  color: #2e4c6d;
+  margin-bottom: 10px;
+}
+
+.description {
+  color: #626262;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 25px;
+
+  & > *:not(:first-child) {
+    margin-left: 8px;
+  }
+}
+
+.cancel-button {
+  color: #2e4c6d;
+}
+
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  transition: background 0.3s;
+
+  ::ng-deep {
+    .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      line-height: 1;
+    }
+  }
+
+  &:hover {
+    background: #2e4c6d;
+  }
+}

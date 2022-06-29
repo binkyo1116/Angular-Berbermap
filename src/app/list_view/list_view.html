@@ -1,0 +1,140 @@
+<div class="list-wrapper">
+  <div class="search-box">
+    <button
+      class="back-button"
+      mat-icon-button
+      color="accent"
+      matTooltip="Close search and filter spots"
+      matTooltipPosition="right"
+      (click)="firebaseService.setDrawerOpen(false)"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <mat-form-field class="no-padding input-outline-primary" appearance="outline">
+      <mat-label>Search for spots</mat-label>
+      <input
+        #searchInput
+        matInput
+        placeholder="Ex: Yosemite"
+        [(ngModel)]="firebaseService.filterText"
+        (ngModelChange)="firebaseService.filterMarkers()"
+        (keydown.enter)="$event.preventDefault(); firebaseService.filterMarkers()"
+      />
+      <mat-icon matSuffix (click)="firebaseService.filterMarkers()">search</mat-icon>
+    </mat-form-field>
+
+    <button
+      class="filter-button"
+      mat-icon-button
+      color="accent"
+      matTooltip="Add filter"
+      matTooltipPosition="below"
+      (click)="openFilterCard()"
+    >
+      <mat-icon>filter_list</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="isFilterCardOpen" class="filter-detail-wrapper" [@expandY]>
+    <div class="filter-section">
+      <div class="filter-title">Category :</div>
+      <div class="filter-items">
+        <div *ngFor="let category of firebaseService.categories" class="filter-item">
+          <mat-checkbox
+            [checked]="firebaseService.filterCategory.has(category)"
+            (change)="firebaseService.updateFilterCategory(category, $event.checked)"
+          >
+            {{category}}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="filter-section">
+      <div class="filter-title">Mark :</div>
+      <div class="filter-items">
+        <div *ngFor="let icon of firebaseService.icons" class="filter-item">
+          <mat-checkbox
+            [checked]="firebaseService.filterIcon.has(icon.icon)"
+            (change)="firebaseService.updateFilterIcon(icon.icon, $event.checked)"
+          >
+            <div class="icon-wrapper">
+              <div>{{icon.label}}</div>
+              <mat-icon class="mark-icon" [style.color]="icon.color"> {{icon.icon}} </mat-icon>
+            </div>
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="filter-section">
+      <div class="filter-title">Tags :</div>
+      <div *ngIf="firebaseService.allTags.size" class="tags">
+        <div
+          *ngFor="let tag of firebaseService.allTags"
+          class="tag"
+          [class.selected]="firebaseService.filterTag.has(tag)"
+          (click)="firebaseService.updateFilterTag(tag)"
+        >
+          {{tag}}
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="bottom-row">
+      <div class="clear-filter" (click)="firebaseService.clearFilter()">Clear filter</div>
+      <button
+        class="close-filter-panel-button"
+        mat-icon-button
+        color="accent"
+        matTooltip="Close filter panel"
+        matTooltipPosition="above"
+        (click)="openFilterCard()"
+      >
+        <mat-icon>expand_less</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="list-info">
+    <div
+      *ngIf="firebaseService.hasFilter() && !this.isFilterCardOpen"
+      class="clear-filter"
+      (click)="firebaseService.clearFilter()"
+    >
+      Clear filter
+    </div>
+    <div class="total-spots">
+      {{firebaseService.filteredMarkers.length + '/' + firebaseService.markers.length + ' spots'}}
+    </div>
+  </div>
+  <div
+    *ngFor="let marker of firebaseService.filteredMarkers; let i = index; trackBy: trackByMarker"
+    class="spot-wrapper"
+    [class.selected]="firebaseService.isSpotSelected(marker.spotId)"
+    (click)="openSpotInfo(marker)"
+  >
+    <div class="spot-name">{{marker.spot.name}}</div>
+    <div class="detail">
+      <div class="category-and-tag-wrapper">
+        <div class="category">{{marker.spot.category}}</div>
+        <mat-icon [ngStyle]="{color: iconColorMap[marker.spot.icon]}">
+          {{marker.spot.icon}}
+        </mat-icon>
+      </div>
+      <div class="images">
+        <img *ngIf="marker.spot.images.length > 0" [src]="marker.spot.images[0].url" />
+      </div>
+    </div>
+
+    <div class="tag-row">
+      <div *ngFor="let tag of marker.spot.tags" class="tag-wrapper">
+        <div class="tag-content">{{tag}}</div>
+      </div>
+    </div>
+  </div>
+</div>

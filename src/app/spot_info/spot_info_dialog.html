@@ -1,0 +1,102 @@
+<div class="dialog-wrapper">
+  <new-spot
+    *ngIf="editMode; else viewModeTemplate"
+    [edit]="true"
+    [spotData]="data.spot"
+    [spotId]="data.spotId"
+  ></new-spot>
+  <ng-template #viewModeTemplate>
+    <div class="spot-content">
+      <div class="spot-title-wrapper">
+        <div class="spot-name">
+          {{data.spot.name}}&nbsp;
+          <div class="spot-title-info">
+            <div class="category">#{{data.spot.category}}</div>
+            <mat-icon [ngStyle]="{color: iconColorMap[data.spot.icon]}">
+              {{data.spot.icon}}
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="tag-row">
+        <div *ngFor="let tag of data.spot.tags" class="tag-wrapper">
+          <div class="tag-content">{{tag}}</div>
+        </div>
+      </div>
+
+      <div
+        #images
+        *ngIf="data.spot.images.length"
+        class="images"
+        (pointerdown)="onImagesPointerDown($event)"
+        (pointercancel)="onImagesPointerCancel($event)"
+      >
+        <div
+          *ngFor="let image of data.spot.images; let i = index"
+          class="image-wrapper"
+          [class.dragging]="imagePointerStartPos"
+          [style.transform]="getImageTransform(i)"
+        >
+          <img [src]="image.url" />
+        </div>
+        <button
+          *ngIf="currentImageIndex !== 0"
+          class="previous-img-button image-buttons"
+          mat-icon-button
+          (pointerdown)="$event.stopPropagation()"
+          (click)="swipeImage(currentImageIndex - 1)"
+        >
+          <mat-icon>arrow_back_ios_new</mat-icon>
+        </button>
+
+        <button
+          *ngIf="currentImageIndex < data.spot.images.length - 1"
+          class="next-img-button image-buttons"
+          mat-icon-button
+          (pointerdown)="$event.stopPropagation()"
+          (click)="swipeImage(currentImageIndex + 1)"
+        >
+          <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
+      </div>
+      <div class="images-dots">
+        <div
+          *ngFor="let image of data.spot.images; let i = index"
+          class="dot"
+          [class.active]="currentImageIndex === i"
+        ></div>
+      </div>
+
+      <div *ngIf="data.spot.notes" class="note-wrapper">
+        <div class="note-container">
+          <div class="note-title">Notes:</div>
+          <div class="note-content">{{data.spot.notes}}</div>
+        </div>
+      </div>
+
+      <a
+        [href]="'https://www.google.com/maps/place/?q=place_id:' + data.spot.placeId"
+        class="google-map-link"
+        target="_blank"
+        matTooltip="Open with Google Maps in a new tab."
+      >
+        <img src="images/google-maps-icon.svg" alt="google maps" />
+      </a>
+    </div>
+
+    <button
+      class="edit-button"
+      mat-icon-button
+      matTooltip="Edit spot"
+      matTooltipPosition="right"
+      (click)="editSpot()"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+
+    <button class="close-button" mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </ng-template>
+</div>

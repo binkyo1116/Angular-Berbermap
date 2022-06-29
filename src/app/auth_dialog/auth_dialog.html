@@ -1,0 +1,93 @@
+<div class="dialog-wrapper auth-wrapper">
+  <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="Login">
+      <ng-template matTabContent>
+        <div class="auth-inputs">
+          <mat-form-field class="no-padding input-outline-primary" appearance="outline">
+            <mat-label>email</mat-label>
+            <input
+              matInput
+              type="email"
+              required
+              [(ngModel)]="email"
+              (keydown.enter)="password ? onSubmit() : loginPasswordRef.focus()"
+            />
+          </mat-form-field>
+          <mat-form-field class="no-padding input-outline-primary" appearance="outline">
+            <mat-label>password</mat-label>
+            <input
+              #loginPasswordRef
+              matInput
+              type="password"
+              autocomplete="current-password"
+              required
+              [(ngModel)]="password"
+              (keydown.enter)="password ? onSubmit() : undefined"
+            />
+          </mat-form-field>
+          <div class="forgot-password">
+            <div (click)="onClickForgotPassword()">Forgot password</div>
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Sign Up">
+      <ng-template matTabContent>
+        <div class="auth-inputs">
+          <mat-form-field class="no-padding input-outline-primary" appearance="outline">
+            <mat-label>email</mat-label>
+            <input
+              matInput
+              type="email"
+              required
+              [(ngModel)]="email"
+              (keydown.enter)="password ? onSubmit() : signupPasswordRef.focus()"
+            />
+          </mat-form-field>
+          <mat-form-field class="no-padding input-outline-primary" appearance="outline">
+            <mat-label>password</mat-label>
+            <input
+              #signupPasswordRef
+              matInput
+              type="password"
+              autocomplete="new-password"
+              required
+              [(ngModel)]="password"
+              (keydown.enter)="password ? onSubmit() : undefined"
+            />
+          </mat-form-field>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="social">
+    <button mat-flat-button class="sign-in-with-google" (click)="signInWithGoogle()">
+      Sign in with Google
+    </button>
+  </div>
+
+  <div *ngIf="errorMsg" class="error">{{errorMsg}}</div>
+
+  <div class="buttons">
+    <button mat-stroked-button class="cancel-button" mat-dialog-close>Cancel</button>
+    <button
+      mat-raised-button
+      color="accent"
+      class="submit-button"
+      [disabled]="loading"
+      (click)="onSubmit()"
+    >
+      {{selectedTabIndex === 0 ? 'Login' : 'Sign up' }}
+    </button>
+  </div>
+
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.2)"
+    size="medium"
+    color="#71b8f7"
+    type="ball-pulse"
+    [fullScreen]="false"
+    [showSpinner]="loading"
+  ></ngx-spinner>
+</div>

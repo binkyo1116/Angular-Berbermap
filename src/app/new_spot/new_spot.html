@@ -1,0 +1,203 @@
+<!-- Spot -->
+<div *ngIf="!edit" class="row">
+  <mat-form-field class="spot-container no-padding input-outline-primary" appearance="outline">
+    <mat-label>Spot</mat-label>
+    <input #spotInput matInput placeholder="Ex. Yosemite" />
+  </mat-form-field>
+  <mat-icon
+    *ngIf="spotAlreadyExistWarning"
+    class="spot-exist-warning"
+    matTooltip="This spot already exist! Please update that spot instead of creating a new one here."
+  >
+    warning
+  </mat-icon>
+</div>
+
+<div *ngIf="edit" class="row">
+  <mat-form-field class="spot-container no-padding input-outline-primary" appearance="outline">
+    <mat-label>Spot</mat-label>
+    <input
+      #spotInput
+      matInput
+      [disabled]="!editAddress"
+      [autofocus]="!editAddress"
+      [(ngModel)]="address"
+    />
+  </mat-form-field>
+  <button
+    *ngIf="edit && !editAddress"
+    class="address-buttons"
+    mat-icon-button
+    matTooltip="Edit address"
+    matTooltipPosition="above"
+    (click)="changeAddress()"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    *ngIf="edit && editAddress"
+    class="address-buttons"
+    mat-icon-button
+    matTooltip="Cancel"
+    matTooltipPosition="above"
+    (click)="cancelChangeAddress()"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
+  <mat-icon
+    *ngIf="spotAlreadyExistWarning"
+    class="spot-exist-warning"
+    matTooltip="This spot already exist! Please update that spot instead of creating a new one here."
+  >
+    warning
+  </mat-icon>
+</div>
+
+<!-- Name -->
+<div class="row">
+  <mat-form-field class="name-container no-padding input-outline-primary" appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+</div>
+
+<!-- Category -->
+<div class="row">
+  <div class="title">Category</div>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedCategory">
+    <mat-radio-button *ngFor="let category of firebaseService.categories" [value]="category">
+      {{category}}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<!-- Icon -->
+<div class="row">
+  <div class="title">Mark</div>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedIcon">
+    <mat-radio-button *ngFor="let icon of firebaseService.icons" [value]="icon.icon">
+      {{icon.label}}
+      <mat-icon class="mark-icon" [style.color]="icon.color"> {{icon.icon}} </mat-icon>
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<!-- Tags -->
+<div class="row">
+  <div class="title">Tags</div>
+
+  <div *ngIf="tags" class="tags">
+    <div *ngFor="let tag of tags" class="tag-wrapper">
+      <span> {{tag}} </span>
+      <button mat-icon-button matTooltipPosition="above" (click)="tags.delete(tag)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field class="no-padding input-outline-primary" appearance="outline">
+      <mat-label>Features</mat-label>
+      <input
+        #tagInput
+        type="text"
+        [(ngModel)]="tagValue"
+        (ngModelChange)="filterTags()"
+        placeholder="Ex: Difficulty, Amenities..."
+        matInput
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        autoActiveFirstOption
+        (optionSelected)="addTag($event.option.value)"
+        (opened)="filterTags()"
+      >
+        <mat-option *ngFor="let option of filteredTagOptions" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Notes -->
+<div class="row">
+  <mat-form-field class="note-container no-padding input-outline-primary" appearance="outline">
+    <mat-label>Notes</mat-label>
+    <textarea matInput [(ngModel)]="notes"></textarea>
+  </mat-form-field>
+</div>
+
+<!-- Upload images -->
+<div class="row title">Images</div>
+<div class="row image-row">
+  <div *ngFor="let image of uploadImages; let i = index" class="image-wrapper">
+    <img [src]="image.storedImage?.url || image.previewURL" />
+    <button
+      class="remove-image-button"
+      mat-icon-button
+      matTooltip="Remove image"
+      matTooltipPosition="above"
+      (click)="uploadImages.splice(i, 1)"
+    >
+      <mat-icon>remove</mat-icon>
+    </button>
+
+    <div class="move-image-order">
+      <button
+        mat-icon-button
+        [disabled]="i === 0"
+        [class.disabled]="i === 0"
+        matTooltip="Move forward"
+        matTooltipPosition="above"
+        (click)="moveImage(i, i - 1)"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        [disabled]="i === uploadImages.length - 1"
+        [class.disabled]="i === uploadImages.length - 1"
+        matTooltip="Move back forward"
+        matTooltipPosition="above"
+        (click)="moveImage(i, i + 1)"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="upload-img">
+    <input type="file" accept="image/*" multiple (change)="onSelectImg($event)" />
+    <mat-icon class="upload-icon">collections</mat-icon>
+    <span>Add Photo</span>
+  </div>
+</div>
+
+<div *ngIf="errorMsg" class="error">{{errorMsg}}</div>
+
+<!-- Save and cancel button -->
+<div class="row button-row" mat-dialog-actions>
+  <button class="cancel-button" mat-raised-button mat-dialog-close>Cancel</button>
+  <button class="save-button" mat-raised-button color="accent" (click)="onSave()">Save</button>
+</div>
+
+<button
+  *ngIf="edit"
+  class="delete-button"
+  mat-icon-button
+  matTooltip="Delete spot"
+  matTooltipPosition="left"
+  (click)="deleteSpot()"
+>
+  <mat-icon>delete_forever</mat-icon>
+</button>
+
+<!-- Loading -->
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.2)"
+  size="medium"
+  [color]="loadingColor"
+  type="ball-pulse"
+  [fullScreen]="false"
+  [showSpinner]="loading"
+></ngx-spinner>

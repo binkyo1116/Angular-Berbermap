@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /users/{uid}/spots/{allPaths=**} {
+      allow read;
+      allow write: if request.auth.uid == uid
+                   && (
+                     request.resource == null
+                       || (
+                         request.resource.size < 10 * 1024 * 1024
+                         && request.resource.contentType.matches('image/.*')
+                       )
+                   );
+    }
+  }
+}

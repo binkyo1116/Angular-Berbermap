@@ -1,0 +1,187 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+@import '~@angular/cdk/overlay-prebuilt.css';
+@import '~ngx-spinner/animations/ball-pulse.css';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+$abyssal-palette: (
+  50: #e6f2f6,
+  100: #c1deea,
+  200: #9fc9dc,
+  300: #81b4cd,
+  400: #6ca5c4,
+  500: #5b97bc,
+  600: #508ab0,
+  700: #45799f,
+  800: #3c698d,
+  900: #2e4c6d,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+$sapphire-palette: (
+  50: #e6f3fb,
+  100: #c1e1f6,
+  200: #9dcff1,
+  300: #7bbbea,
+  400: #64ade6,
+  500: #529fe2,
+  600: #4a91d5,
+  700: #407fc2,
+  800: #396fb0,
+  900: #2c5190,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+$apricity-palette: (
+  50: #f9ecea,
+  100: #fcd2c6,
+  200: #fcb6a1,
+  300: #fc9a7c,
+  400: #fc845f,
+  500: #ff6f43,
+  600: #f5693f,
+  700: #e76239,
+  800: #d95b35,
+  900: #c04e2d,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$berbermap-primary: mat.define-palette($abyssal-palette, 900);
+$berbermap-accent: mat.define-palette($sapphire-palette, 800);
+
+// The warn palette is optional (defaults to red).
+$berbermap-warn: mat.define-palette($apricity-palette, 300);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$berbermap-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $berbermap-primary,
+      accent: $berbermap-accent,
+      warn: $berbermap-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($berbermap-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.mat-icon-button.mat-icon-button,
+.mat-fab.mat-fab,
+.mat-mini-fab.mat-mini-fab {
+  &,
+  .mat-button-wrapper.mat-button-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+.dialog-wrapper {
+  position: relative;
+  max-width: 1080px;
+  background: #f5f5f5;
+  padding: 60px 32px;
+  overflow: auto;
+
+  @media screen and (min-width: 600px) {
+    padding: 60px;
+  }
+
+  @media screen and (min-width: 900px) {
+    padding: 84px;
+  }
+}
+
+.cdk-overlay-pane {
+  .mat-dialog-container {
+    padding: 0;
+  }
+}
+
+// Styles for places autocomplete
+.pac-container {
+  border-radius: 6px;
+}
+.pac-item {
+  padding: 4px 8px;
+}
+
+.input-outline-primary.mat-form-field-appearance-outline {
+  .mat-form-field-outline-thick {
+    color: #2e4c6d;
+  }
+}
+
+mat-form-field.no-padding {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,11 @@
+<div class="confirm-wrapper">
+  <div class="title" mat-dialog-title>{{title}}</div>
+  <div class="description">{{description}}</div>
+
+  <div class="buttons">
+    <button mat-stroked-button class="cancel-button" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="accent" class="submit-button" (click)="onConfirm()">
+      {{confirmButtonText}}
+    </button>
+  </div>
+</div>

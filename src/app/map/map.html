@@ -1,0 +1,35 @@
+<google-map
+  height="100%"
+  width="100%"
+  [options]="{
+    disableDefaultUI: true,
+    clickableIcons: false,
+    zoomControl: true,
+    styles: mapStyle,
+    zoom: 11
+  }"
+  (click)="clickMap()"
+>
+  <map-marker
+    *ngIf="myLocation"
+    [position]="myLocation"
+    [options]="myLocationMarkerOptions"
+  ></map-marker>
+  <map-marker
+    *ngFor="let marker of firebaseService.filteredMarkers; trackBy: trackByMarker"
+    [position]="marker.position"
+    [options]="marker.options"
+    [clickable]="true"
+    (mapClick)="$event.domEvent.stopPropagation(); onMarkerClick(marker)"
+  ></map-marker>
+</google-map>
+
+<button
+  #centerButton
+  class="center-button"
+  [matTooltip]="myLocation ? 'Center to your location' : 'Location is disabled by your browser'"
+  matTooltipPosition="left"
+  (click)="centerToUserLocation()"
+>
+  <mat-icon>{{myLocation ? "gps_fixed" : "location_searching"}}</mat-icon>
+</button>

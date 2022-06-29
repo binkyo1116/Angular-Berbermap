@@ -1,0 +1,80 @@
+<mat-drawer-container class="drawer-container" autosize hasBackdrop="false">
+  <mat-drawer
+    #drawer
+    class="drawer-content"
+    mode="side"
+    (openedChange)="firebaseService.setDrawerOpen($event)"
+  >
+    <list-view></list-view>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="top-right-buttons">
+      <ng-container *ngIf="firebaseService.currentUser as user; else showLogin">
+        <button
+          mat-fab
+          [matTooltip]="user.displayName ?? user.email ?? 'TODO'"
+          matTooltipPosition="left"
+          [matMenuTriggerFor]="userMenu"
+        >
+          <mat-icon>face</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <ng-template matMenuContent>
+            <button mat-menu-item (click)="auth.signOut()">Log out</button>
+          </ng-template>
+        </mat-menu>
+
+        <button
+          mat-fab
+          color="accent"
+          class="add-new-button"
+          matTooltip="Add a new spot"
+          matTooltipPosition="left"
+          (click)="openAddNewSpotDialog()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </ng-container>
+
+      <!-- Not logged in -->
+      <ng-template #showLogin>
+        <button
+          mat-fab
+          matTooltip="Login / Signup"
+          matTooltipPosition="left"
+          (click)="openAuthDialog()"
+        >
+          <mat-icon>person</mat-icon>
+        </button>
+      </ng-template>
+    </div>
+
+    <div *ngIf="firebaseService.currentUser" class="top-left-buttons">
+      <button
+        *ngIf="!firebaseService.isDrawerOpen()"
+        mat-fab
+        color="accent"
+        matTooltip="Search and filter spots"
+        matTooltipPosition="below"
+        (click)="firebaseService.setDrawerOpen(true)"
+        [@fadeAnimation]
+      >
+        <mat-icon>manage_search</mat-icon>
+      </button>
+      <button
+        *ngIf="firebaseService.hasFilter()"
+        mat-fab
+        color="accent"
+        matTooltip="Clear filter"
+        matTooltipPosition="below"
+        (click)="firebaseService.clearFilter()"
+        [@fadeAnimation]
+      >
+        <mat-icon>filter_list_off</mat-icon>
+      </button>
+    </div>
+
+    <map></map>
+  </mat-drawer-content>
+</mat-drawer-container>
